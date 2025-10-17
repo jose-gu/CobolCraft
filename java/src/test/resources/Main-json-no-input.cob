@@ -1,0 +1,21 @@
+IDENTIFICATION DIVISION.
+PROGRAM-ID. Main-JsonParse.
+
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01 SUBPROGRAM-NAME      PIC X(32).
+01 INPUT-STR            PIC X(256).
+01 OFFSET               BINARY-LONG UNSIGNED.
+01 FLAG                 BINARY-CHAR UNSIGNED.
+01 VALUE-LONG           BINARY-LONG.
+01 VALUE-FLOAT          FLOAT-LONG.
+01 VALUE-BOOL           BINARY-CHAR UNSIGNED.
+01 VALUE-STR            PIC X(256).
+
+PROCEDURE DIVISION.
+    DISPLAY "Main-JsonParse started".
+    DISPLAY "Calling JsonParse-String"
+    CALL "JsonParse-String"
+    DISPLAY "Called JsonParse-String"
+    GOBACK.
+END PROGRAM Main-JsonParse.

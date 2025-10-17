@@ -1,0 +1,29 @@
+cobc -I src/_copybooks -I src/_copybooks/procedures -I src/_copybooks/state -I src/_copybooks/structs -I out -x -o java/src/test/resources/src/blocks/MainBlocksCount java/src/test/resources/src/blocks/Main.cob
+
+cobc -I src/_copybooks -I src/_copybooks/procedures -I src/_copybooks/state -I src/_copybooks/structs -I out -x -o out/MainBlocksCount java/src/test/resources/src/blocks/Main.cob
+
+
+1. Create MainTestedProgramName that calls your cobol program in resources under programs/<relative/path>
+2. compile MainTestedProgramName into same folder in out as your cobol program in out
+cobc -I src/_copybooks -I src/_copybooks/procedures -I src/_copybooks/state -I src/_copybooks/structs -I out -x -o out/<relative/path>/MainTestedProgramName java/src/test/resources/programs/<relative/path>/MainTestedProgramName.cob
+
+cobc \
+  -I src/_copybooks \
+  -I src/_copybooks/procedures \
+  -I src/_copybooks/state \
+  -I src/_copybooks/structs \
+  -I out \
+  -fstatic-call \
+  -x \
+  -o out/MainBlocksCount \
+  java/src/test/resources/programs/MainBlocksCount.cob \
+  out/blocks.o out/encoding/json-parse.o out/registries.o out/encoding/strings.o
+
+
+3. compile tested program
+cobc -I src/_copybooks -I src/_copybooks/procedures -I src/_copybooks/state -I src/_copybooks/structs -I out -m -o out-2/blocks.o src/blocks.cob
+
+4. run test with mvn -Dtest=Sometest test from java location
+mvn -Dtest=BlocksCountTest test
+
+

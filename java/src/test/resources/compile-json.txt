@@ -1,0 +1,32 @@
+
+
+
+cobc -I src/_copybooks -I src/_copybooks/procedures -I src/_copybooks/state -I src/_copybooks/structs -I out -x -o out-1/MainJson java/src/test/resources/Main-json.cob
+cobc -I src/_copybooks -I src/_copybooks/procedures -I src/_copybooks/state -I src/_copybooks/structs -I out -m -o out-1/JsonParse-String java/src/test/resources/json-parse.cob
+run with:
+COB_LIBRARY_PATH=out-1 ./out-1/MainJson
+
+⚠️ Why it still fails
+
+The COBOL runtime doesn’t automatically look in the executable’s directory for modules unless it’s explicitly told to — even if both files are side by side.
+
+When you run ./out-1/MainJson, your working directory is probably not out-1/, but rather its parent (e.g., project root).
+
+So at runtime, it’s checking . (the current directory) for JsonParse-String, not out-1/.
+
+✅ Two simple fixes
+Option 1: cd into out-1/ before running
+cd out-1
+./MainJson
+
+
+Now the working directory is out-1, so CALL "JsonParse-String" will find the module in . (the current folder).
+
+Option 2: Run with a runtime path
+COB_LIBRARY_PATH=out-1 ./out-1/MainJson
+
+
+This explicitly tells the COBOL runtime to look in out-1/ for modules.
+
+
+https://chatgpt.com/share/68ef64fa-eb9c-800a-933f-eccb32e26bdf
