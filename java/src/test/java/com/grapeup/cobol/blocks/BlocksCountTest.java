@@ -45,3 +45,4 @@ class BlocksCountTest {
         assertEquals(7, result.getInt("LK-COUNT"));
     }
 }
+

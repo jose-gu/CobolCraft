@@ -50,3 +50,4 @@ PROCEDURE DIVISION.
 
     GOBACK.
 END PROGRAM MainBlocksCount_TC-4.
+
