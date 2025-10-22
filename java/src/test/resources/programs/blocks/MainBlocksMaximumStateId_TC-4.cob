@@ -1,5 +1,5 @@
 IDENTIFICATION DIVISION.
-PROGRAM-ID. MainBlocksCount_TC-5.
+PROGRAM-ID. MainBlocksMaximumStateId_TC-4.
 
 ENVIRONMENT DIVISION.
 INPUT-OUTPUT SECTION.
@@ -14,27 +14,26 @@ FD RESULT-FILE.
 
 WORKING-STORAGE SECTION.
     COPY DD-BLOCKS.
-    01 LK-COUNT                 BINARY-LONG UNSIGNED.
-    01 LK-COUNT-DISPLAY         PIC 9(10).
+    01 LK-MAXIMUM-ID            BINARY-LONG UNSIGNED.
+    01 LK-MAXIMUM-ID-DISPLAY    PIC 9(10).
     01 OUTPUT-LINE              PIC X(80) VALUE SPACES.
     01 WS-RESULT-FILE-PATH      PIC X(256).
 
 PROCEDURE DIVISION.
-    DISPLAY "MainBlocksCount_TC-5 started".
+    DISPLAY "Main-Blocks-MaximumStateId started".
 
     ACCEPT WS-RESULT-FILE-PATH FROM ENVIRONMENT "RESULT_FILE_PATH".
-    *> Initialize BLOCK-COUNT from environment (post-removal state)
-    ACCEPT BLOCK-COUNT FROM ENVIRONMENT "BLOCK-COUNT".
 
-    *> Call the target subprogram
-    CALL 'Blocks-Count' USING LK-COUNT.
-    DISPLAY "Blocks-Count returned LK-COUNT=" LK-COUNT.
+    *> Initialize BLOCKS structure to maximum value within test harness constraints
+    MOVE 2147483647 TO BLOCKS-MAXIMUM-STATE-ID.
 
-    *> Write outputs to result file
+    CALL 'Blocks-MaximumStateId' USING LK-MAXIMUM-ID.
+    DISPLAY "Blocks-MaximumStateId returned LK-MAXIMUM-ID=" LK-MAXIMUM-ID.
+
     OPEN OUTPUT RESULT-FILE
-    MOVE LK-COUNT TO LK-COUNT-DISPLAY
-    STRING "LK-COUNT=" DELIMITED BY SIZE
-           LK-COUNT-DISPLAY DELIMITED BY SIZE
+    MOVE LK-MAXIMUM-ID TO LK-MAXIMUM-ID-DISPLAY
+    STRING "LK-MAXIMUM-ID=" DELIMITED BY SIZE
+           LK-MAXIMUM-ID-DISPLAY DELIMITED BY SIZE
            INTO OUTPUT-LINE
     END-STRING
     MOVE OUTPUT-LINE TO RESULT-REC
@@ -42,5 +41,5 @@ PROCEDURE DIVISION.
     CLOSE RESULT-FILE
 
     GOBACK.
-END PROGRAM MainBlocksCount_TC-5.
+END PROGRAM MainBlocksMaximumStateId_TC-4.
 

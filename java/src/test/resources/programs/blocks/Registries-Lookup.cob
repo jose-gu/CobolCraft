@@ -1,0 +1,18 @@
+IDENTIFICATION DIVISION.
+PROGRAM-ID. Registries-Lookup.
+
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+    COPY DD-BLOCKS.
+
+LINKAGE SECTION.
+01 LK-REGISTRY-NAME        PIC X ANY LENGTH.
+01 LK-NAME                 PIC X ANY LENGTH.
+01 LK-ID                   BINARY-LONG.
+
+PROCEDURE DIVISION USING LK-REGISTRY-NAME LK-NAME LK-ID.
+    *> Return sequential ID based on current BLOCK-COUNT (already incremented in caller)
+    COMPUTE LK-ID = BLOCK-COUNT - 1.
+    GOBACK.
+END PROGRAM Registries-Lookup.
+

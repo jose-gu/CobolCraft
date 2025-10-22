@@ -1,0 +1,132 @@
+IDENTIFICATION DIVISION.
+       PROGRAM-ID. Main-Blocks-Parse-TC-2.
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT RESULT-FILE ASSIGN TO WS-RESULT-FILE-PATH
+               ORGANIZATION IS LINE SEQUENTIAL.
+       DATA DIVISION.
+       FILE SECTION.
+       FD  RESULT-FILE.
+       01  RESULT-REC                 PIC X(80).
+       WORKING-STORAGE SECTION.
+           COPY DD-BLOCKS.
+
+       01  LK-JSON                    PIC X(400).
+       01  LK-JSON-LEN                BINARY-LONG UNSIGNED VALUE 0.
+       01  LK-FAILURE                 BINARY-CHAR  UNSIGNED VALUE 0.
+
+       01  NUM-DISPLAY                PIC -9(10).
+       01  OUTPUT-LINE                PIC X(80) VALUE SPACES.
+       01  WS-RESULT-FILE-PATH        PIC X(200).
+
+       PROCEDURE DIVISION.
+           DISPLAY "Main-Blocks-Parse started".
+
+           ACCEPT WS-RESULT-FILE-PATH FROM ENVIRONMENT "RESULT_FILE_PATH".
+
+           ACCEPT LK-JSON        FROM ENVIRONMENT "LK-JSON".
+           ACCEPT LK-JSON-LEN    FROM ENVIRONMENT "LK-JSON-LEN".
+           ACCEPT LK-FAILURE     FROM ENVIRONMENT "LK-FAILURE".
+
+           *> Call the target subprogram
+           CALL "Blocks-Parse" USING LK-JSON LK-JSON-LEN LK-FAILURE.
+           DISPLAY "Blocks-Parse returned LK-FAILURE=" LK-FAILURE.
+
+           *> Write outputs
+           OPEN OUTPUT RESULT-FILE.
+
+           *> LK-FAILURE
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE LK-FAILURE TO NUM-DISPLAY.
+           STRING "LK-FAILURE=" DELIMITED BY SIZE
+                  NUM-DISPLAY   DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           *> BLOCK-COUNT
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCK-COUNT TO NUM-DISPLAY.
+           STRING "BLOCK-COUNT=" DELIMITED BY SIZE
+                  NUM-DISPLAY    DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           *> BLOCK-ENTRY-PROPERTY-COUNT-1
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCK-ENTRY-PROPERTY-COUNT(1) TO NUM-DISPLAY.
+           STRING "BLOCK-ENTRY-PROPERTY-COUNT-1=" DELIMITED BY SIZE
+                  NUM-DISPLAY                      DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           *> BLOCK-ENTRY-PROPERTY-COUNT-2
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCK-ENTRY-PROPERTY-COUNT(2) TO NUM-DISPLAY.
+           STRING "BLOCK-ENTRY-PROPERTY-COUNT-2=" DELIMITED BY SIZE
+                  NUM-DISPLAY                      DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           *> BLOCK-ENTRY-MAXIMUM-STATE-ID-1
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCK-ENTRY-MAXIMUM-STATE-ID(1) TO NUM-DISPLAY.
+           STRING "BLOCK-ENTRY-MAXIMUM-STATE-ID-1=" DELIMITED BY SIZE
+                  NUM-DISPLAY                         DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           *> BLOCK-ENTRY-MAXIMUM-STATE-ID-2
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCK-ENTRY-MAXIMUM-STATE-ID(2) TO NUM-DISPLAY.
+           STRING "BLOCK-ENTRY-MAXIMUM-STATE-ID-2=" DELIMITED BY SIZE
+                  NUM-DISPLAY                         DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           *> BLOCKS-MAXIMUM-STATE-ID
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCKS-MAXIMUM-STATE-ID TO NUM-DISPLAY.
+           STRING "BLOCKS-MAXIMUM-STATE-ID=" DELIMITED BY SIZE
+                  NUM-DISPLAY                 DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           *> BLOCK-NAMES sorted check via indices
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCK-NAMES-ENTRY-INDEX(1) TO NUM-DISPLAY.
+           STRING "BLOCK-NAMES-ENTRY-INDEX-1=" DELIMITED BY SIZE
+                  NUM-DISPLAY                  DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCK-NAMES-ENTRY-INDEX(2) TO NUM-DISPLAY.
+           STRING "BLOCK-NAMES-ENTRY-INDEX-2=" DELIMITED BY SIZE
+                  NUM-DISPLAY                  DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           CLOSE RESULT-FILE.
+
+           GOBACK.
+       END PROGRAM Main-Blocks-Parse-TC-2.
+

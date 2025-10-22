@@ -1,0 +1,72 @@
+IDENTIFICATION DIVISION.
+       PROGRAM-ID. MainBlocks-Parse_TC-10.
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT RESULT-FILE ASSIGN TO WS-RESULT-FILE-PATH
+               ORGANIZATION IS LINE SEQUENTIAL.
+       DATA DIVISION.
+       FILE SECTION.
+       FD  RESULT-FILE.
+       01  RESULT-REC                  PIC X(80).
+       WORKING-STORAGE SECTION.
+           COPY DD-BLOCKS.
+           01 LK-JSON                   PIC X(4096) VALUE SPACES.
+           01 LK-JSON-LEN               BINARY-LONG UNSIGNED VALUE 0.
+           01 LK-FAILURE                BINARY-CHAR UNSIGNED VALUE 0.
+           01 LK-FAILURE-DISPLAY        PIC 9(10) VALUE 0.
+           01 BLOCK-COUNT-DISPLAY       PIC 9(10) VALUE 0.
+           01 BLOCKS-MAX-STATE-DISPLAY  PIC 9(10) VALUE 0.
+           01 OUTPUT-LINE               PIC X(80) VALUE SPACES.
+           01 WS-RESULT-FILE-PATH       PIC X(256) VALUE SPACES.
+       PROCEDURE DIVISION.
+           DISPLAY "MainBlocks-Parse_TC-10 started".
+
+           ACCEPT WS-RESULT-FILE-PATH FROM ENVIRONMENT "RESULT_FILE_PATH".
+           ACCEPT LK-JSON       FROM ENVIRONMENT "LK-JSON".
+           ACCEPT LK-JSON-LEN   FROM ENVIRONMENT "LK-JSON-LEN".
+           ACCEPT LK-FAILURE    FROM ENVIRONMENT "LK-FAILURE".
+
+           *> Ensure a clean initial state (though subprogram also initializes)
+           INITIALIZE BLOCKS.
+
+           CALL "Blocks-Parse" USING LK-JSON LK-JSON-LEN LK-FAILURE.
+           DISPLAY "Blocks-Parse returned LK-FAILURE=" LK-FAILURE.
+
+           OPEN OUTPUT RESULT-FILE.
+
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE LK-FAILURE TO LK-FAILURE-DISPLAY.
+           STRING
+               "LK-FAILURE=" DELIMITED BY SIZE
+               LK-FAILURE-DISPLAY DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCK-COUNT TO BLOCK-COUNT-DISPLAY.
+           STRING
+               "BLOCK-COUNT=" DELIMITED BY SIZE
+               BLOCK-COUNT-DISPLAY DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           MOVE SPACES TO OUTPUT-LINE.
+           MOVE BLOCKS-MAXIMUM-STATE-ID TO BLOCKS-MAX-STATE-DISPLAY.
+           STRING
+               "BLOCKS-MAXIMUM-STATE-ID=" DELIMITED BY SIZE
+               BLOCKS-MAX-STATE-DISPLAY DELIMITED BY SIZE
+               INTO OUTPUT-LINE
+           END-STRING.
+           MOVE OUTPUT-LINE TO RESULT-REC.
+           WRITE RESULT-REC.
+
+           CLOSE RESULT-FILE.
+
+           GOBACK.
+       END PROGRAM MainBlocks-Parse_TC-10.
+
